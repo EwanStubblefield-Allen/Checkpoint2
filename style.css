@@ -1,0 +1,108 @@
+/* SECTION Element Selectors */
+body {
+  background-image: url(https://images.unsplash.com/photo-1615195627275-48660e9cd84f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fG5lYnVsYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  font-family: 'Bungee', cursive;
+}
+
+header {
+  font-size: 50px;
+  text-shadow: 0 4px 4px yellow;
+}
+
+p {
+  margin: 0;
+}
+
+/* SECTION Class Selectors */
+.moon {
+  max-height: 42vh;
+}
+
+.cheese-count {
+  background-color: #FFCB47;
+  border-radius: 15px 15px 0 0;
+}
+
+.counter {
+  background-color: #FEAB2F;
+  height: fit-content;
+}
+
+.pointer-counter {
+  border-radius: 15px 0 0 0;
+}
+
+.auto-counter {
+  border-radius: 0 15px 0 0;
+}
+
+.p-bar {
+  height: 6px;
+}
+
+.p-bg {
+  background-color: #EA8F3A;
+}
+
+.menu {
+  background-color: #FCB707;
+  border: 10px solid #FFCB47;
+  font-size: 18px;
+}
+
+.shop {
+  border-radius: 15px 0 0 15px;
+}
+
+.shop-text {
+  font-size: 14px;
+}
+
+.shop-btn {
+  color: white;
+  border: none;
+  width: 168px;
+  padding-bottom: 10px;
+  padding-top: 0;
+}
+
+.click-btn {
+  box-shadow: inset 0 -10px #03a4c5;
+}
+
+.auto-btn {
+  box-shadow: inset 0 -10px #57151b;
+}
+
+.upgrades {
+  border-radius: 0 15px 15px 0;
+}
+
+.stats {
+  border: 1px solid white;
+}
+
+/* SECTION Pseudo Selectors */
+.moon:hover {
+  max-height: 43vh;
+  cursor: pointer;
+}
+
+.shop-btn:hover {
+  color: white;
+}
+
+.shop-btn:active {
+  box-shadow: inset 0 10px #FCB707;
+  padding-bottom: 0;
+  padding-top: 10px;
+  color: black;
+}
