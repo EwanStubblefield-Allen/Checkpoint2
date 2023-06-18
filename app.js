@@ -12,8 +12,8 @@ let upgrades = {
       origPrice: 50,
       quantity: 0,
       multiplier: 1,
+      clickType: 'click',
       isRevealed: false
-
     },
     {
       name: 'grater',
@@ -21,6 +21,7 @@ let upgrades = {
       origPrice: 250,
       quantity: 0,
       multiplier: 5,
+      clickType: 'click',
       isRevealed: false
     }
   ],
@@ -31,6 +32,7 @@ let upgrades = {
       origPrice: 1000,
       quantity: 0,
       multiplier: 20,
+      clickType: 'auto',
       isRevealed: false
     },
     {
@@ -39,21 +41,41 @@ let upgrades = {
       origPrice: 50000,
       quantity: 0,
       multiplier: 100,
+      clickType: 'auto',
       isRevealed: false
     }
   ]
 }
 
-let cheese = 100000
-let clickMulti = 1
-let autoMulti = 0
-let timer = 0
-let timerPer = 0
+let counters = {
+  cheese: 0,
+  clickMulti: 1,
+  autoMulti: 0,
+  timer: 0,
+  timerPer: 0
+}
 
 // SECTION Functions
 function mine() {
-  cheese += clickMulti
+  counters.cheese += counters.clickMulti
+  saveCheese()
+}
+
+function saveCheese() {
+  window.localStorage.setItem("counters", JSON.stringify(counters))
+  window.localStorage.setItem("upgrades", JSON.stringify(upgrades))
   draw()
+}
+
+function loadCheese() {
+  let storedCheese = JSON.parse(window.localStorage.getItem("counters"))
+  let storedUpgrades = JSON.parse(window.localStorage.getItem("upgrades"))
+  if (storedCheese) {
+    counters = storedCheese
+  }
+  if (storedUpgrades) {
+    upgrades = storedUpgrades
+  }
 }
 
 function draw() {
@@ -70,7 +92,7 @@ function draw() {
       upgradeMulti.innerText = round(u.multiplier * u.quantity)
       upgradePrice.innerText = round(u.price)
 
-      if (cheese < u.price) {
+      if (counters.cheese < u.price) {
         upgradeBtn.setAttribute('disabled', '')
       } else {
         u.isRevealed = true
@@ -78,21 +100,24 @@ function draw() {
       }
 
       if (u.isRevealed == true) {
-        console.log('success', u);
-        // NOTE if upgrade is equal to auto add / 3s
-        if ()
+        if (u.clickType == 'auto') {
           upgradeReveal.innerHTML = `
-        <p>${u.name}</p>
-        <p>+${u.multiplier}</p>`
+          <p>${u.name}</p>
+          <p>+${u.multiplier} / 3s</p>`
+        } else {
+          upgradeReveal.innerHTML = `
+          <p>${u.name}</p>
+          <p>+${u.multiplier}</p>`
+        }
         upgradeStat.innerHTML = `
         <p>${u.name}</p>`
       }
     })
   })
 
-  cheeseElem.innerText = cheese
-  pointerElem.innerText = clickMulti
-  autoElem.innerText = autoMulti
+  cheeseElem.innerText = counters.cheese
+  pointerElem.innerText = counters.clickMulti
+  autoElem.innerText = counters.autoMulti
 }
 
 function round(num) {
@@ -108,38 +133,39 @@ function round(num) {
 
 function addUpgrade(name, type) {
   let foundUpgrade = upgrades[type].find(u => u.name == name)
-  if (cheese >= foundUpgrade.price) {
+  if (counters.cheese >= foundUpgrade.price) {
     if (type == 'automaticUpgrades') {
-      autoMulti += foundUpgrade.multiplier
+      counters.autoMulti += foundUpgrade.multiplier
     } else {
-      clickMulti += foundUpgrade.multiplier
+      counters.clickMulti += foundUpgrade.multiplier
     }
-    cheese -= foundUpgrade.price
+    counters.cheese -= foundUpgrade.price
     foundUpgrade.quantity++
     foundUpgrade.price += Math.floor((foundUpgrade.origPrice / 2) * foundUpgrade.quantity)
   }
-  draw()
+  saveCheese()
 }
 
 function autoClick() {
-  cheese += autoMulti
-  draw()
+  counters.cheese += counters.autoMulti
+  saveCheese()
 }
 
 function timerBar() {
-  timer += 300
-  if (timer >= 3000) {
-    timer = 0
+  counters.timer += 300
+  if (counters.timer >= 3000) {
+    counters.timer = 0
   }
-  timerPer = timer / 300 * 10
+  counters.timerPer = counters.timer / 300 * 10
 
-  if (autoMulti > 0) {
+  if (counters.autoMulti > 0) {
     timerElem.innerHTML = `
-    <div class="progress-bar p-bg" role="progressbar" style="width: ${timerPer}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>`
+    <div class="progress-bar p-bg" role="progressbar" style="width: ${counters.timerPer}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>`
   }
 }
 
 // SECTION Called Functions
+loadCheese()
 draw()
 setInterval(timerBar, 300)
 setInterval(autoClick, 3000)
