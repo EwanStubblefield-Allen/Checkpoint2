@@ -51,9 +51,10 @@ let counters = {
   cheese: 0,
   clickMulti: 1,
   autoMulti: 0,
-  timer: 0,
-  timerPer: 0
 }
+
+let timer = 0
+let timerPer = 0
 
 // SECTION Functions
 function mine() {
@@ -152,15 +153,15 @@ function autoClick() {
 }
 
 function timerBar() {
-  counters.timer += 300
-  if (counters.timer >= 3000) {
-    counters.timer = 0
+  timer += 300
+  if (timer >= 3000) {
+    timer = 0
   }
-  counters.timerPer = counters.timer / 300 * 10
+  timerPer = timer / 300 * 10
 
   if (counters.autoMulti > 0) {
     timerElem.innerHTML = `
-    <div class="progress-bar p-bg" role="progressbar" style="width: ${counters.timerPer}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>`
+    <div class="progress-bar p-bg" role="progressbar" style="width: ${timerPer}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>`
   }
 }
 
